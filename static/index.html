@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Smol Text</title>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #fbfbfb; color: #111111; }
+        .font-serif { font-family: 'Source Serif Pro', Georgia, serif; }
+        .focus-none:focus { outline: none; box-shadow: none; }
+    </style>
+</head>
+<body>
+
+    <form action="/api/paste" method="POST">
+        <header class="border-b border-gray-100 bg-white bg-opacity-80 backdrop-filter backdrop-blur fixed top-0 w-full z-10">
+            <div class="max-w-3xl mx-auto px-6 py-3 flex justify-between items-center">
+                <span class="text-xs font-bold tracking-wider text-gray-400 font-sans">Smol Text</span>
+                <button type="submit" class="bg-blue-600 text-white text-xs font-medium px-4 py-1.5 rounded-full hover:bg-blue-700 transition shadow-sm">
+                    Publish
+                </button>
+            </div>
+        </header>
+
+        <main class="max-w-2xl mx-auto px-6 pt-32 pb-16 font-serif">
+            <input type="text" name="title" required placeholder="Title" 
+                   class="w-full text-4xl md:text-5xl font-bold bg-transparent border-none focus-none placeholder-gray-200 mb-8 leading-tight">
+            
+            <textarea name="content" required rows="20" placeholder="Start writing here (Markdown supported)" 
+                      class="w-full text-xl bg-transparent border-none focus-none placeholder-gray-300 resize-none leading-relaxed"></textarea>
+        </main>
+    </form>
+
+</body>
+</html>
