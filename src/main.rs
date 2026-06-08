@@ -3,7 +3,7 @@
 use axum::{
     Form, Router,
     extract::{Path, State},
-    http::StatusCode,
+    http::{HeaderMap, StatusCode},
     response::{Html, IntoResponse, Redirect},
     routing::{get, post},
 };
@@ -60,6 +60,7 @@ async fn main() {
 
 async fn create_text(
     State(state): State<AppState>,
+    headers: HeaderMap,
     Form(input): Form<CreateText>,
 ) -> impl IntoResponse {
     let alphabet: [char; 62] = [
@@ -80,6 +81,19 @@ async fn create_text(
 
     match result {
         Ok(_) => {
+            let host = headers
+                .get("host")
+                .and_then(|v| v.to_str().ok())
+                .unwrap_or("localhost:8080");
+
+            let protocol = if host.contains("localhost") || host.contains("127.0.0.1") {
+                "http"
+            } else {
+                "https"
+            };
+
+            let full_article_url = format!("{}://{}/p/{}", protocol, host, slug);
+
             let success_html = format!(
                 r#"<!DOCTYPE html>
                 <html lang="en">
@@ -125,7 +139,11 @@ async fn create_text(
                     </div>
                 </body>
                 </html>"#,
-                slug, slug, slug, slug, slug
+                slug,
+                slug,
+                urlencoding::encode(&full_article_url),
+                slug,
+                slug
             );
             Html(success_html).into_response()
         }
